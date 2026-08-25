@@ -1,0 +1,198 @@
+
+
+
+sharp(1)         U.S. Geological Survey (wrdapp)         sharp(1)
+
+
+NAME
+       sharp - A quasi-three-dimensional, numerical finite-difference model
+               to simulate freshwater and saltwater flow separated by a
+               sharp interface in layered coastal aquifer systems
+
+ABSTRACT
+       When the width of the freshwater-saltwater transition zone is small
+       relative to the thickness of the aquifer, it can be assumed that
+       freshwater and saltwater are separated by a sharp interface.  The
+       sharp interface modeling approach, in conjunction with vertical
+       integration of the aquifer flow equations, facilitates regional
+       scale studies of coastal areas.  This approach does not give
+       information concerning the nature of the transition zone but does
+       reproduce the regional flow dynamics of the system and the response
+       of the interface to applied stresses.  SHARP is a quasi-three-
+       dimensional, numerical model that solves finite-difference
+       approximations of the equations for coupled freshwater and saltwater
+       flow separated by a sharp interface in layered coastal aquifer
+       systems.  The model is quasi-three dimensional because each aquifer
+       is represented by a layer in which flow is assumed to be horizontal.
+
+METHOD
+       An implicit finite-difference discretization scheme that is central
+       in space and backward in time is used to solve the freshwater and
+       saltwater flow equations for each model layer.  Spatial
+       discretization is achieved using a block-centered finite-difference
+       grid that allows for variable grid spacing.  In the central
+       difference approximations for the space derivatives, the thicknesses
+       at the grid block boundaries are linearly interpolated, and the
+       conductivity terms are estimated using the harmonic mean of nodal
+       values.  At blocks containing pumped wells, the amount of freshwater
+       and saltwater extracted depends on the position of the interface
+       relative to the elevation of the screened interval of the well.  The
+       rate of freshwater and (or) saltwater extraction from a block,
+       relative to the total fluid extraction rate, is determined linearly
+       on the basis of the proportion of screen penetrating the freshwater
+       and saltwater zones relative to the total open interval of the well.
+
+       The interface elevation in each finite-difference block is
+       calculated using the numerically-determined freshwater and saltwater
+       head distributions.  The shape of the interface can be obtained by
+       connecting the discretized interface elevations.  The position of
+       the interface tip (the intersection of the interface with the top of
+       the aquifer) and the interface toe (the intersection of the
+       interface with the bottom of the aquifer) are located by linearly
+       projecting a line defined by the interface elevations in adjacent
+       blocks until it intersects the top and bottom of the aquifer.
+
+HISTORY
+       Version 1.1 1999/05/10 - Minor changes to bring code into closer
+          adherence to Fortran 77 standard and to improve code portability;
+          renamed subroutine "READ" as "READIN" to avoid name conflict with
+          Fortran READ statement.
+
+
+
+
+                           10 May 1999                          1
+
+
+
+
+
+sharp(1)         U.S. Geological Survey (wrdapp)         sharp(1)
+
+
+       Version 1.0 1990/09/12 - Initial release
+
+DATA REQUIREMENTS
+       SHARP requires all of the input parameters typically required by a
+       finite-difference ground-water flow model (initial conditions,
+       boundary conditions, aquifer properties).  However, because it
+       solves both freshwater and saltwater flow equations, it has
+       additional input requirements.  The fresh and saltwater specific
+       gravities and dynamic viscosities must be specified.  Freshwater
+       hydraulic conductivities are specified and saltwater hydraulic
+       conductivities are calculated in the model.  Fresh and saltwater
+       specific storages, effective porosity and confining layer leakance
+       values must be specified.  For interface tip and toe tracking, SHARP
+       requires elevations of the base of each layer and the thickness of
+       the layer.  Offshore bathymetric elevations are required to
+       correctly represent offshore boundary conditions.  See documentation
+       for details.
+
+OUTPUT OPTIONS
+       See documentation.
+
+SYSTEM REQUIREMENTS
+       SHARP is written in Fortran 77 with the following extension:  use of
+       names longer than 6 characters.  The code has been used on UNIX-
+       based computers and on DOS-based 386 or greater computers having a
+       math coprocessor.
+
+DOCUMENTATION
+       Essaid, H.I., 1990, The computer model SHARP, a quasi-three-
+          dimensional finite-difference model to simulate freshwater and
+          saltwater flow in layered coastal aquifer systems: U.S.
+          Geological Survey Water-Resources Investigations Report 90-4130,
+          181 p.
+
+REFERENCES
+       Essaid, H.I., 1990, A multilayered sharp interface model of coupled
+          freshwater and saltwater flow in coastal systems--model
+          development and application: Water Resources Research, v. 26, no.
+          7, p. 1431-1454.
+
+       Essaid, H.I., 1992, Simulation of freshwater and saltwater flow in
+          the coastal aquifer system of the Purisima Formation in the
+          Soquel-Aptos Basin, Santa Cruz County, California: U.S.
+          Geological Survey Water-Resources Investigations Report 91-4148,
+          35 p.
+
+CONTACTS
+       Operation and Distribution:
+          U.S. Geological Survey
+          Hydrologic Analysis Software Support Program
+          437 National Center
+          Reston, VA 20192
+
+          h2osoft@usgs.gov
+
+
+
+                           10 May 1999                          2
+
+
+
+
+
+sharp(1)         U.S. Geological Survey (wrdapp)         sharp(1)
+
+
+       Official versions of U.S. Geological Survey water-resources analysis
+       software are available for electronic retrieval via the World Wide
+       Web (WWW) at:
+
+                  http://water.usgs.gov/software/
+
+       and via anonymous File Transfer Protocol (FTP) from:
+
+                  water.usgs.gov (path: /pub/software).
+
+       The WWW page and anonymous FTP directory from which the SHARP
+       software can be retrieved are, respectively:
+
+                  http://water.usgs.gov/software/sharp.html
+                                --and--
+                  /pub/software/ground_water/sharp
+
+       If you would like to obtain the price of and (or) order paper copies
+       of USGS reports, contact the USGS Branch of Information Services at:
+
+                  USGS Information Services
+                  Box 25286
+                  Denver Federal Center
+                  Denver CO 80225
+
+       To inquire about Open-File Reports or Water-Resources Investigations
+       Reports:
+                  Tel: 303-202-4200; Fax 303-202-4695
+
+       To inquire about other USGS reports:
+                  Tel: 303-202-4700; Fax 303-202-4693
+
+SEE ALSO
+       mocdense(1) - A two-constituent solute transport model for ground
+                     water having variable density
+       sutra(1) - Saturated and (or) unsaturated, constant or
+                  variable-density fluid flow, and solute or energy
+                  transport (2-dimensional finite-element code)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           10 May 1999                          3
+
+
