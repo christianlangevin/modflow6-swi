@@ -55,6 +55,8 @@ class SwiAnimator:
     edgecolor: str = "k"
     figsize: tuple = (8, 6)
     get_title: callable = None
+    layer_lines: bool = True
+    layer_line_color: str = "0.4"
 
     def __post_init__(self):
         self.gwf = self.sim.gwf[0]
@@ -71,6 +73,21 @@ class SwiAnimator:
         self.fig, self.ax = plt.subplots(figsize=self.figsize)
         self.ax.set_xlim(self.x.min(), self.x.max())
         self.ax.set_ylim(*self.ylim)
+
+        # static layer boundaries (model top and each layer bottom); drawn as
+        # lines, so they survive _clear_collections between frames
+        if self.layer_lines:
+            top = np.asarray(self.modelgrid.top).reshape(self.botm.shape[1:])
+            self.ax.plot(
+                self.x, top.flatten(), color=self.layer_line_color, lw=0.8
+            )
+            for k in range(self.botm.shape[0]):
+                self.ax.plot(
+                    self.x,
+                    self.botm[k].flatten(),
+                    color=self.layer_line_color,
+                    lw=0.8,
+                )
 
         self.make_plot_func = make_cross_section_plot
 
@@ -112,10 +129,22 @@ class SwiAnimator:
         self.ax.set_title(t)
         return self.ax.collections
 
-    def create(self):
-        nframes = self.zeta_all.shape[0]
+    def plot_frame(self, i):
+        """Draw a single saved time step as a static figure (negative
+        indices count from the end, e.g. -1 for the final step)."""
+        if i < 0:
+            i = self.zeta_all.shape[0] + i
+        self._draw_frame(i)
+        return self.fig
+
+    def create(self, frames=None):
+        """Create the animation. By default every saved time step becomes a
+        frame; pass an iterable of frame indices to animate a subset (e.g.
+        range(i0, nframes) to skip a spin-up period)."""
+        if frames is None:
+            frames = self.zeta_all.shape[0]
         ani = animation.FuncAnimation(
-            self.fig, self._draw_frame, frames=nframes, blit=False
+            self.fig, self._draw_frame, frames=frames, blit=False
         )
         plt.close(self.fig)
         return ani
